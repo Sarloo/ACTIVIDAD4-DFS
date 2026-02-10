@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Productos</title>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <h2>Login</h2>
+  <input id="user" placeholder="Usuario">
+  <input id="pass" type="password" placeholder="Contraseña">
+  <button onclick="login()">Entrar</button>
+  <button onclick="registrar()">Registrar</button>
+</div>
+
+<!-- APP -->
+<div id="appBox" style="display:none">
+  <h2>Productos</h2>
+
+  <!-- FORMULARIO -->
+  <input id="nombre" placeholder="Nombre del producto">
+  <input id="precio" type="number" placeholder="Precio">
+  <button onclick="crear()">Agregar producto</button>
+
+  <ul id="lista"></ul>
+
+  <button onclick="logout()">Cerrar sesión</button>
+</div>
+
+<!-- MODAL EDITAR PRODUCTO -->
+<div id="modalEditar" style="display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.5);
+  justify-content:center;
+  align-items:center;
+">
+
+  <div style="background:white; padding:20px; border-radius:10px; width:300px;">
+    <h3>Editar producto</h3>
+
+    <input id="editNombre" placeholder="Nuevo nombre">
+    <input id="editPrecio" type="number" placeholder="Nuevo precio">
+
+    <br><br>
+    <button onclick="guardarEdicion()">Guardar</button>
+    <button onclick="cerrarModal()">Cancelar</button>
+  </div>
+
+</div>
+
+
+<script src="app.js"></script>
+</body>
+</html>
