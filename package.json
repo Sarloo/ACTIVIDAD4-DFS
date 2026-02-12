@@ -2,10 +2,11 @@
   "name": "actividad4-dfs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "start": "node server.js",
+  "test": "jest"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sarloo/ACTIVIDAD4-DFS.git"
