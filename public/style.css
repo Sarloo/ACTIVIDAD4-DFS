@@ -1,0 +1,345 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* FONDO GENERAL */
+body {
+  background: linear-gradient(135deg, #6d28d9, #9333ea);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ================= LOGIN ================= */
+
+.login-card {
+  background: #f5f5f5;
+  padding: 40px 50px;
+  border-radius: 20px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.login-card h2 {
+  margin-bottom: 25px;
+  color: #6d28d9;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.recent-access {
+  margin-top: 16px;
+  background: #ece8f7;
+  border: 1px solid #d8cff1;
+  border-radius: 14px;
+  padding: 12px;
+  text-align: left;
+}
+
+.recent-access h3 {
+  color: #5b21b6;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+#accesosLista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 170px;
+  overflow-y: auto;
+}
+
+#accesosLista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.access-user {
+  font-weight: 700;
+  color: #3f3f46;
+}
+
+.access-date {
+  color: #57534e;
+  text-align: right;
+}
+
+.access-empty {
+  justify-content: center;
+  color: #6b7280;
+}
+
+/* ================= APP ================= */
+
+.app-container {
+  background: #f3f3f3;
+  width: 700px;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+/* TITULO */
+.title {
+  font-size: 32px;
+  color: #6d28d9;
+  margin-bottom: 30px;
+}
+
+/* FORM */
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.form input {
+  padding: 12px;
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  width: 200px;
+  outline: none;
+}
+
+/* BOTONES */
+.btn {
+  background: linear-gradient(135deg, #6d28d9, #9333ea);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.btn.small {
+  padding: 12px 25px;
+}
+
+/* TARJETAS PRODUCTO */
+#lista {
+  list-style: none;
+}
+
+#lista li {
+  background: #dcd3f3;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 25px;
+  text-align: left;
+  box-shadow: inset 0 0 0 8px #c8bce8;
+}
+
+#lista li h3 {
+  background: #f3f3f3;
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.card-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #6d28d9, #9333ea);
+  border: none;
+  color: white;
+  padding: 8px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout {
+  background: #d35442;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 300px;
+  text-align: center;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  body {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 520px;
+    padding: 24px 16px;
+    margin: 10px auto;
+  }
+
+  .login-card .btn {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  #accesosLista li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .access-date {
+    text-align: left;
+    word-break: break-word;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 18px 12px;
+    margin: 10px auto;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: clamp(26px, 6vw, 32px);
+    margin-bottom: 16px;
+  }
+
+  .form {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .form input,
+  .form .btn.small {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  #lista li {
+    padding: 14px;
+  }
+
+  #lista li h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .product-info {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    font-size: 14px;
+  }
+
+  .product-info span {
+    display: block;
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+  .card-buttons {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    flex: 1;
+    min-height: 44px;
+  }
+
+  .logout {
+    min-height: 46px;
+  }
+
+  .modal {
+    padding: 14px;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  body {
+    padding: 8px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  #lista li h3 {
+    font-size: 20px;
+    padding: 10px 14px;
+  }
+}

@@ -1,8 +1,57 @@
+// ================= ELEMENTOS =================
+const loginBox = document.getElementById("loginBox");
+const appBox = document.getElementById("appBox");
+
+const user = document.getElementById("user");
+const pass = document.getElementById("pass");
+const accesosLista = document.getElementById("accesosLista");
+
+const nombre = document.getElementById("nombre");
+const precio = document.getElementById("precio");
+const stock = document.getElementById("stock");
+
+const lista = document.getElementById("lista");
+
+const modalEditar = document.getElementById("modalEditar");
+const editNombre = document.getElementById("editNombre");
+const editPrecio = document.getElementById("editPrecio");
+const editStock = document.getElementById("editStock");
+
 let token = "";
 let productoEditando = null;
 
+// ================= ULTIMOS ACCESOS =================
+async function cargarAccesos() {
+  if (!accesosLista) return;
+
+  try {
+    const res = await fetch("/api/auth/access-logs");
+    if (!res.ok) throw new Error("No se pudo cargar");
+
+    const accesos = await res.json();
+    accesosLista.innerHTML = "";
+
+    if (!accesos.length) {
+      accesosLista.innerHTML = `<li class="access-empty">Sin accesos recientes</li>`;
+      return;
+    }
+
+    accesos.forEach((acceso) => {
+      const fecha = acceso.loginAt ? new Date(acceso.loginAt).toLocaleString() : "N/A";
+      accesosLista.innerHTML += `
+        <li>
+          <span class="access-user">${acceso.username}</span>
+          <span class="access-date">${fecha}</span>
+        </li>
+      `;
+    });
+  } catch (error) {
+    accesosLista.innerHTML = `<li class="access-empty">No disponible por ahora</li>`;
+  }
+}
+
 // ================= LOGIN =================
-async function login() {
+window.login = async function () {
 
   const res = await fetch("/api/auth/login", {
     method: "POST",
@@ -15,8 +64,8 @@ async function login() {
 
   const data = await res.json();
 
-  if (!data.token) {
-    alert("Credenciales incorrectas");
+  if (!res.ok || !data.token) {
+    alert(data.mensaje || "No se pudo iniciar sesión");
     return;
   }
 
@@ -26,10 +75,10 @@ async function login() {
   appBox.style.display = "block";
 
   cargar();
-}
+};
 
 // ================= REGISTRO =================
-async function registrar() {
+window.registrar = async function () {
 
   const res = await fetch("/api/auth/register", {
     method: "POST",
@@ -41,14 +90,15 @@ async function registrar() {
   });
 
   const data = await res.json();
-  alert(data.mensaje);
-}
+  alert(data.mensaje || "No se pudo registrar");
+  cargarAccesos();
+};
 
 // ================= LOGOUT =================
-function logout() {
+window.logout = function () {
   token = "";
   location.reload();
-}
+};
 
 // ================= OBTENER PRODUCTOS =================
 async function cargar() {
@@ -61,79 +111,78 @@ async function cargar() {
   lista.innerHTML = "";
 
   productos.forEach(p => {
+
+    const fecha = p.createdAt || p.fechaCreacion;
+    const actualizado = p.updatedAt;
+
     lista.innerHTML += `
       <li>
-        <strong>${p.nombre}</strong><br>
-        Precio: $${p.precio}<br>
-        Creado por: ${p.creadoPor?.username}<br>
-        Fecha: ${new Date(p.fechaCreacion).toLocaleDateString()}<br><br>
+        <h3>${p.nombre}</h3>
 
-        <button onclick="editar('${p._id}', '${p.nombre}', ${p.precio})">
-          Editar
-        </button>
+        <div class="product-info">
+          <span>Creado por: ${p.creadoPor?.username || "N/A"}</span>
+          <span>Fecha: ${fecha ? new Date(fecha).toLocaleString() : "N/A"}</span>
+          <span>Actualizado: ${actualizado ? new Date(actualizado).toLocaleString() : "N/A"}</span>
+        </div>
 
-        <button onclick="eliminar('${p._id}')">
-          Eliminar
-        </button>
+        <p>Precio: $${p.precio}</p>
+        <p>Stock: ${p.stock ?? 0}</p>
+
+        <div class="card-buttons">
+          <button class="edit-btn"
+            onclick="editar('${p._id}', '${p.nombre}', ${p.precio}, ${p.stock ?? 0})">
+            Editar
+          </button>
+
+          <button class="delete-btn"
+            onclick="eliminar('${p._id}')">
+            X
+          </button>
+        </div>
       </li>
     `;
   });
 }
 
-// ================= CREAR / ACTUALIZAR =================
-async function crear() {
+// ================= CREAR =================
+window.crear = async function () {
+  const stockValue = stock.value === "" ? 0 : Number(stock.value);
 
-  // EDITAR
-  if (productoEditando) {
-    await fetch(`/api/products/${productoEditando}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: token
-      },
-      body: JSON.stringify({
-        nombre: nombre.value,
-        precio: precio.value
-      })
-    });
-
-    productoEditando = null;
-
-  } else {
-    // CREAR
-    await fetch("/api/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: token
-      },
-      body: JSON.stringify({
-        nombre: nombre.value,
-        precio: precio.value
-      })
-    });
-  }
+  await fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: token
+    },
+    body: JSON.stringify({
+      nombre: nombre.value,
+      precio: precio.value,
+      stock: stockValue
+    })
+  });
 
   nombre.value = "";
   precio.value = "";
+  stock.value = "";
+
   cargar();
-}
+};
 
 // ================= EDITAR =================
-function editar(id, nombreProducto, precioProducto) {
+window.editar = function (id, nombreProducto, precioProducto, stockProducto) {
 
-  // Guarda el ID del producto que se está editando
   productoEditando = id;
 
-  // Coloca valores actuales en el modal
   editNombre.value = nombreProducto;
   editPrecio.value = precioProducto;
+  editStock.value = stockProducto;
 
-  // Muestra el modal
   modalEditar.style.display = "flex";
-}
+};
 
-async function guardarEdicion() {
+// ================= GUARDAR EDICIÓN =================
+window.guardarEdicion = async function () {
+  const stockValue = editStock.value === "" ? 0 : Number(editStock.value);
 
   await fetch(`/api/products/${productoEditando}`, {
     method: "PUT",
@@ -143,23 +192,23 @@ async function guardarEdicion() {
     },
     body: JSON.stringify({
       nombre: editNombre.value,
-      precio: editPrecio.value
+      precio: editPrecio.value,
+      stock: stockValue
     })
   });
 
   cerrarModal();
   cargar();
-}
+};
 
-function cerrarModal() {
+// ================= CERRAR MODAL =================
+window.cerrarModal = function () {
   modalEditar.style.display = "none";
   productoEditando = null;
-}
-
-
+};
 
 // ================= ELIMINAR =================
-async function eliminar(id) {
+window.eliminar = async function (id) {
 
   if (!confirm("¿Eliminar producto?")) return;
 
@@ -169,4 +218,6 @@ async function eliminar(id) {
   });
 
   cargar();
-}
+};
+
+cargarAccesos();

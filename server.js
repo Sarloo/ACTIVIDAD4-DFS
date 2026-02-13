@@ -34,10 +34,12 @@ app.use("/api/products", productRoutes);
 // Puerto
 const PORT = process.env.PORT || 3000;
 
-// Arranca el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-});
+// En Vercel se exporta la app sin abrir puerto local
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en puerto ${PORT}`);
+  });
+}
 
 // Exporta app para pruebas
 module.exports = app;

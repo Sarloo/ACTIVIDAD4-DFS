@@ -19,6 +19,7 @@ exports.createProduct = async (req, res) => {
   const product = await Product.create({
     nombre: req.body.nombre,   // Nombre enviado desde frontend
     precio: req.body.precio,   // Precio enviado
+    stock: req.body.stock,     // Stock enviado
     creadoPor: req.user.id     // ID del usuario (del JWT)
   });
 

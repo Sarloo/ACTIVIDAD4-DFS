@@ -15,10 +15,12 @@ const productSchema = new mongoose.Schema({
     required: true      // Obligatorio
   },
 
-  // Fecha de creación automática
-  fechaCreacion: {
-    type: Date,         // Tipo fecha
-    default: Date.now   // Se asigna automáticamente
+  // Stock del producto
+  stock: {
+    type: Number,       // Número
+    required: true,
+    default: 0,
+    min: 0
   },
 
   // Usuario que creó el producto
@@ -27,7 +29,8 @@ const productSchema = new mongoose.Schema({
     ref: "User",                          // Referencia al modelo User
     required: true
   }
-
+}, {
+  timestamps: true // Agrega createdAt y updatedAt automáticamente
 });
 
 // Exporta el modelo Product
