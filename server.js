@@ -1,5 +1,6 @@
 // Importa express para crear el servidor
 const express = require("express");
+const path = require("path");
 
 // Importa mongoose para conectar MongoDB
 const mongoose = require("mongoose");
@@ -20,7 +21,7 @@ const app = express();
 // Middlewares globales
 app.use(cors());                // Permite solicitudes externas
 app.use(express.json());        // Permite leer JSON
-app.use(express.static("public")); // Sirve HTML
+app.use(express.static(path.join(__dirname, "public"))); // Sirve HTML
 
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -30,6 +31,11 @@ mongoose.connect(process.env.MONGO_URI)
 // Usa las rutas
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+
+// Home explícito para Vercel
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 // Puerto
 const PORT = process.env.PORT || 3000;
